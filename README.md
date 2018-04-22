@@ -34,7 +34,7 @@ conda env create -f environment-gpu.yml
 ```
 
 Or you can manually install the required libraries (see the contents of the environemnt*.yml files) using pip.
-The description and use of all the dependencies is provided in the [dependencies.txt](https://github.com/Pratt2309/ADS_Self_Driving_Car/blob/master/dependencies.txt) file.
+The description and use of all the dependencies is provided in the [dependencies.txt](https://github.com/Pratt2309/Self_Driving_Car/blob/master/Dependencies.txt) file.
 
 ### Run the pretrained model
 
