@@ -1,6 +1,9 @@
 MIT License
 
-Copyright (c) 2017 Udacity
+Copyright (c) 2018 Pratyaksh Gautam, Ibukunoluwa Oduniyi, Shardul Wagh
+
+The code in the document by Ibukunoluwa Oduniyi, Pratyaksh Gautam and Shardul Wagh is licensed under the MIT License https://opensource.org/licenses/MIT
+
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
