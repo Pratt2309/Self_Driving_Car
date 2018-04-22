@@ -1,40 +1,91 @@
-## Welcome to Udacity's Self-Driving Car Simulator 
+# ADS_Self_Driving_Car
 
-This simulator was built for [Udacity's Self-Driving Car Nanodegree](https://udacity.com/drive), to teach students how to train cars how to navigate road courses using deep learning. See more [project details here](https://github.com/udacity/CarND-Behavioral-Cloning-P3).
 
-All the assets in this repository require Unity. Please follow the instructions below for the full setup.
+## Project Description
 
-### Avaliable Game Builds (Precompiled builds of the simulator)
+In this project, we use a neural network to clone car driving behavior.  It is a supervised regression problem between the car steering angles and the road images in front of a car.  
 
-Instructions: Download the zip file, extract it and run the exectution file.
+Those images were taken from three different camera angles (from the center, the left and the right of the car).  
 
-Version 2, 2/07/17
+The network is based on [The NVIDIA model](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/), which has been proven to work in this problem domain.
 
-[Linux](https://d17h27t6h515a5.cloudfront.net/topher/2017/February/58983558_beta-simulator-linux/beta-simulator-linux.zip)
-[Mac](https://d17h27t6h515a5.cloudfront.net/topher/2017/February/58983385_beta-simulator-mac/beta-simulator-mac.zip)
-[Windows](https://d17h27t6h515a5.cloudfront.net/topher/2017/February/58983318_beta-simulator-windows/beta-simulator-windows.zip)
+As image processing is involved, the model is using convolutional layers for automated feature engineering.  
 
-Version 1, 12/09/16
+### Files included
 
-[Linux](https://d17h27t6h515a5.cloudfront.net/topher/2016/November/5831f0f7_simulator-linux/simulator-linux.zip)
-[Mac](https://d17h27t6h515a5.cloudfront.net/topher/2016/November/5831f290_simulator-macos/simulator-macos.zip)
-[Windows 32](https://d17h27t6h515a5.cloudfront.net/topher/2016/November/5831f4b6_simulator-windows-32/simulator-windows-32.zip)
-[Windows 64](https://d17h27t6h515a5.cloudfront.net/topher/2016/November/5831f3a4_simulator-windows-64/simulator-windows-64.zip)
+- model.py The script used to create and train the model.
+- drive.py The script to drive the car. You can feel free to resubmit the original drive.py or make modifications and submit your modified version.
+- utils.py The script to provide useful functionalities (i.e. image preprocessing and augumentation)
+- model.h5 The model weights.
+- environments.yml conda environment (Use TensorFlow without GPU)
 
-### Unity Simulator User Instructions
 
-1. Clone the repository to your local directory, please make sure to use [Git LFS](https://git-lfs.github.com) to properly pull over large texture and model assets. 
+Note: drive.py is originally from [the Udacity Behavioral Cloning project GitHub](https://github.com/udacity/CarND-Behavioral-Cloning-P3) but it has been modified.
 
-2. Install the free game making engine [Unity](https://unity3d.com), if you dont already have it. Unity is necessary to load all the assets.
+## Quick Start
 
-3. Load Unity, Pick load exiting project and choice the `self-driving-car-sim` folder.
+### Install required python libraries:
 
-4. Load up scenes by going to Project tab in the bottom left, and navigating to the folder Assets/1_SelfDrivingCar/Scenes. To load up one of the scenes, for example the Lake Track, double click the file LakeTrackTraining.unity. Once the scene is loaded up you can fly around it in the scene viewing window by holding mouse right click to turn, and mouse scroll to zoom.
+You need a [anaconda](https://www.continuum.io/downloads) or [miniconda](https://conda.io/miniconda.html) to use the environment setting.
 
-5. Play a scene. Jump into game mode anytime by simply clicking the top play button arrow right above the viewing window.
+```python
+# Use TensorFlow without GPU
+conda env create -f environment.yml 
 
-6. View Scripts. Scripts are what make all the different mechanics of the simulator work and they are located in two different directories, the first is Assets/1_SelfDrivingCar/Scripts which mostly relate to the UI and socket connections. The second directory for scripts is Assets/Standard Assets/Vehicle/Car/Scripts and they control all the different interactions with the car.
+# Use TensorFlow with GPU
+conda env create -f environment-gpu.yml
+```
 
-7. Building a new track. You can easily build a new track by using the prebuilt road prefabs located in Assets/RoadKit/Prefabs click and drag the road prefab pieces onto the editor, you can snap road pieces together easily by using vertex snapping by holding down "v" and dragging a road piece close to another piece.
+Or you can manually install the required libraries (see the contents of the environemnt*.yml files) using pip.
+The description and use of all the dependencies is provided in the [dependencies.txt](https://github.com/Pratt2309/ADS_Self_Driving_Car/blob/master/dependencies.txt) file.
 
-![Self-Driving Car Simulator](./sim_image.png)
+### Run the pretrained model
+
+Start up [the Udacity self-driving simulator](https://github.com/udacity/self-driving-car-sim), choose a scene and press the Autonomous Mode button.  Then, run the model as follows:
+
+```python
+python drive.py model.h5
+```
+
+### To train the model
+
+You'll need the data folder which contains the training images.
+
+```python
+python model.py
+```
+
+This will generate a file `model-<epoch>.h5` whenever the performance in the epoch is better than the previous best.  For example, the first epoch will generate a file called `model-000.h5`.
+
+
+## Model Architecture Design
+
+The design of the network is based on [the NVIDIA model](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/), which has been used by NVIDIA for the end-to-end self driving test.  As such, it is well suited for the project.  
+
+It is a deep convolution network which works well with supervised image classification / regression problems.  As the NVIDIA model is well documented, I was able to focus how to adjust the training images to produce the best result with some adjustments to the model to avoid overfitting and adding non-linearity to improve the prediction.
+
+I've added the following adjustments to the model. 
+
+- I used Lambda layer to normalized input images to avoid saturation and make gradients work better.
+- I've added an additional dropout layer to avoid overfitting after the convolution layers.
+- I've also included ELU for activation function for every layer except for the output layer to introduce non-linearity.
+
+In the end, the model looks like as follows:
+
+- Image normalization
+- Convolution: 5x5, filter: 24, strides: 2x2, activation: ELU
+- Convolution: 5x5, filter: 36, strides: 2x2, activation: ELU
+- Convolution: 5x5, filter: 48, strides: 2x2, activation: ELU
+- Convolution: 3x3, filter: 64, strides: 1x1, activation: ELU
+- Convolution: 3x3, filter: 64, strides: 1x1, activation: ELU
+- Drop out (0.5)
+- Fully connected: neurons: 100, activation: ELU
+- Fully connected: neurons:  50, activation: ELU
+- Fully connected: neurons:  10, activation: ELU
+- Fully connected: neurons:   1 (output)
+
+As per the NVIDIA model, the convolution layers are meant to handle feature engineering and the fully connected layer for predicting the steering angle.  However, as stated in the NVIDIA document, it is not clear where to draw such a clear distinction.  Overall, the model is very functional to clone the given steering behavior.  
+
+## References
+- NVIDIA model: https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/
+- Udacity Self-Driving Car Simulator: https://github.com/udacity/self-driving-car-sim

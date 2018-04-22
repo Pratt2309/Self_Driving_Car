@@ -1,0 +1,66 @@
+Python for Data Analysis is concerned with the manipulating, processing, cleaning, and crunching data in Python. It is also a practical to perform scientific computing in Python, tailored for data-intensive applications. A number of dependencies are required to be installed to make the program work.
+To make the process of installing the dependencies easy, an environment.yml is created.
+*-----------*-----------*-----------*-----------*-----------*-----------*-----------*-----------*
+
+The following dependencies are required for running the project:-
+
+NumPy:
+NumPy is the fundamental package for scientific computing with Python. It contains a powerful N-dimensional array object useful linear algebra, Fourier transform, and random number capabilities.
+We convert the image into a array since the model expects a 4D array which is made using numpy.
+
+Matplotlib:
+Matplotlib is a Python 2D plotting library which produces publication quality figures in a variety of hardcopy formats and interactive environments across platforms.
+
+OpenCV:
+OpenCV-Python is a library of Python bindings designed to solve computer vision problems.
+OpenCV makes use of Numpy, which is a highly optimized library for numerical operations with a MATLAB-style syntax. All the OpenCV array structures are converted to and from Numpy arrays. This also makes it easier to integrate with other libraries that use Numpy such as SciPy and Matplotlib.
+
+Pillow:
+Pillow is a Python Imaging Library.
+
+Sklearn (Scikit-learn,Scikit-image):
+Simple and efficient tools for data mining and data analysis which makes machine learning in python very convinent. It is built on NumPy, SciPy and Matplotlib and therefore is easy to integrate with other libraries.
+We use train_test_split to split out training and testing data.
+
+SciPy:
+SciPy is a Python-based ecosystem of open-source software for mathematics, science, and engineering. Some of the core packages are NumPy, Pandas, Matplotlib, SciPy library.
+Pandas is data analysis toolkit used to create, read, update, delete datasets.
+
+h5py:
+The h5py package is a Pythonic interface to the HDF5 binary data format.
+HDF5 lets you store huge amounts of numerical data, and easily manipulate that data from NumPy. For example, you can slice into multi-terabyte datasets stored on disk, as if they were real NumPy arrays. Thousands of datasets can be stored in a single file, categorized and tagged however you want.
+The code saves the trained model in a h5 format.
+
+Eventlet:
+Eventlet is a concurrent networking library for Python that allows you to change how you run your code, not how you write it.
+We register the event handler and deploy the code as an event.
+
+Flask:
+It is a web framework which has built-in development server and debugger, integrated unit testing support and RESTful request dispatching.
+We create the application using Flask and then wrap it in an engineio framework using socketio.
+
+Seaborn:
+Seaborn is a Python visualization library based on matplotlib. It provides a high-level interface for drawing attractive statistical graphics.
+The plotting functions try to do something useful when called with a minimal set of arguments, and they expose a number of customizable options through additional parameters. Some of the functions plot directly into a matplotlib axes object, while others operate on an entire figure and produce plots with several panels.
+
+Pandas:
+pandas is an open source, BSD-licensed library providing high-performance, easy-to-use data structures and data analysis tools for the Python programming language.
+We use it to read the incoming data and convert it into a pandas dataframe for further processing.
+
+ImageIo:
+Imageio is a Python library that provides an easy interface to read and write a wide range of image data, including animated images, video, volumetric data, and scientific formats. It is cross-platform, runs on Python 2.7 and 3.4+, and is easy to install.
+We use it to change image formats for processing.
+
+MoviePy:
+MoviePy is a Python module for video editing, which can be used for basic operations (like cuts, concatenations, title insertions), video compositing (a.k.a. non-linear editing), video processing, or to create advanced effects. It can read and write the most common video formats, including GIF.
+
+Keras:
+Keras is a high-level neural networks API, written in Python and capable of running on top of TensorFlow, CNTK, or Theano. It was developed with a focus on enabling fast experimentation.
+It allows for easy and fast prototyping (through user friendliness, modularity, and extensibility). It also supports both convolutional networks and recurrent networks, as well as combinations of the two and runs seamlessly on CPU and GPU.
+Keras is a high level wrapper on top of tensorflow (machine learning library). The Sequential container is a linear stack of layers which is provided by keras.
+It also provides us with optimizers, callbacks and layers for creating our sequential model.
+
+Tensorflow:
+The Python API for tensorflow is at present the most complete and the easiest to use, but other language APIs may be easier to integrate into projects and may offer some performance advantages in graph execution.
+TensorFlow is a Python library for fast numerical computing created and released by Google.
+It can run on single CPU systems, GPUs as well as mobile devices and large scale distributed systems of hundreds of machines.
