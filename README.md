@@ -54,18 +54,29 @@ python model.py
 
 This will generate a file `model-<epoch>.h5` whenever the performance in the epoch is better than the previous best.  For example, the first epoch will generate a file called `model-000.h5`.
 
+## Data generation
+
+Generation of data takes place during simulation. A human driver drives the car on the tracks for the first simulation to generate driving images. Three cameras are placed on the front of the vehicle to capture left, right, centre perspective frontal images as the car drives along the road. In addition to the three sets of images captured, braking, acceleration, and steering angles applied by the human driver are also obtained. We are then left with a csv file consisting of all the relevant data that will be needed to train the model. Because the model essentially learns what it is trained on — the human driver’s driving images in this case— that is why this sort of training is termed behavioural-cloning and hence, we tried to drive as neatly as possible, ensuring with didn’t once veer off the road.
+
+## Data Pre-processing
+The images that are captured contain features like the hood of the car and the sky that are inconsequential to the training and results of the model so we cropped these out. Subsequently, the images are normalized to avoid saturation and make the gradients work better. Image pre-processing measures taking:
+
+- the images are cropped so that the model won’t be trained with the sky and the car front parts
+- the images are resized to 66x200 (3 YUV channels) as per NVIDIA model
+- the images are normalized (image data divided by 127.5 and subtracted 1.0). As stated in the Model Architecture section, this is to avoid saturation and make gradients work better)
+
 
 ## Model Architecture Design
 
 The design of the network is based on [the NVIDIA model](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/), which has been used by NVIDIA for the end-to-end self driving test.  As such, it is well suited for the project.  
 
-It is a deep convolution network which works well with supervised image classification / regression problems.  As the NVIDIA model is well documented, I was able to focus how to adjust the training images to produce the best result with some adjustments to the model to avoid overfitting and adding non-linearity to improve the prediction.
+It is a deep convolution network which works well with supervised image classification / regression problems.  As the NVIDIA model is well documented, We were able to focus how to adjust the training images to produce the best result with some adjustments to the model to avoid overfitting and adding non-linearity to improve the prediction.
 
-I've added the following adjustments to the model. 
+We've added the following adjustments to the model. 
 
-- I used Lambda layer to normalized input images to avoid saturation and make gradients work better.
-- I've added an additional dropout layer to avoid overfitting after the convolution layers.
-- I've also included ELU for activation function for every layer except for the output layer to introduce non-linearity.
+- We used Lambda layer to normalized input images to avoid saturation and make gradients work better.
+- We've added an additional dropout layer to avoid overfitting after the convolution layers.
+- We've also included ELU for activation function for every layer except for the output layer to introduce non-linearity.
 
 In the end, the model looks like as follows:
 
@@ -86,30 +97,30 @@ As per the NVIDIA model, the convolution layers are meant to handle feature engi
 
 ## Training, Validation and Test
 
-I splitted the images into train and validation set in order to measure the performance at every epoch.  Testing was done using the simulator.
+We splitted the images into train and validation set in order to measure the performance at every epoch.  Testing was done using the simulator.
 
 As for training, 
 
-- I used mean squared error for the loss function to measure how close the model predicts to the given steering angle for each image.
-- I used Adam optimizer for optimization with learning rate of 1.0e-4 which is smaller than the default of 1.0e-3.  The default value was too big and made the validation loss stop improving too soon.
-- I used ModelCheckpoint from Keras to save the model only if the validation loss is improved which is checked for every epoch.
+- We used mean squared error for the loss function to measure how close the model predicts to the given steering angle for each image.
+- We used Adam optimizer for optimization with learning rate of 1.0e-4 which is smaller than the default of 1.0e-3.  The default value was too big and made the validation loss stop improving too soon.
+- We used ModelCheckpoint from Keras to save the model only if the validation loss is improved which is checked for every epoch.
+- We tinkered with the epoch and image sample per epoch values for training the model before concluding that a sample per epoch value of 20,000 and an epoch count of just around 8-10 provided us with the best trade-off between performance and computing time, especially as we observed that higher epochs of about 20 and above really failed to offer any improvement in the validation loss and a much longer computing time. 
 
 ### The Lake Side Track
 
-As there can be unlimited number of images augmented, I set the samples per epoch to 20,000.  I tried from 1 to 200 epochs but I found 5-10 epochs is good enough to produce a well trained model for the lake side track.  The batch size of 40 was chosen as that is the maximum size which does not cause out of memory error on my Mac with NVIDIA GeForce GT 650M 1024 MB.
+As there can be unlimited number of images augmented, we set the samples per epoch to 20,000. This is a two-lane desolate road that has very few steep bends, and largely consists of straight roads to navigate through. The batch size of 40 was chosen as that is the maximum size which does not cause out of memory error on my Mac.
 
 ### The Jungle Track
 
-This tracker was later released in the new simulator by Udacity and replaced the old mountain track.  It's much more difficuilt than the lake side track and the old mountain track.
+This track was later released in the new simulator by Udacity and replaced the old mountain track. It's much more difficuilt than the lake side track and the old mountain track.A larger circuit than the lake side track, and it has a more serpentine nature, which is why it can be quite tricky to navigate without veering off road.
 
-I used the simulator to generate training data by doing 3 to 4 rounds.  Also, added several recovery scenarios to handle tricky curves and slopes.
+## Evaluation
 
-I felt that the validation loss is not a great indication of how well it drives.  So, I tried the last several models to see which one drives the best.  For this, I set the save_best_only to False (use `-o false` for model.py), and I used 50 epcohs (Use `-n 50`).
-
+Evaluation of the model is done in the unity simulation. As shown in figure 3, in testing (Autonomus) mode the car simulator streams in images in realtime and the network takes these images as input and provides steering commands that achieve the proposed steering angles to control the car.
 
 ## Outcome
 
-The model can drive the course without bumping into the side ways.
+We have been able to build, train and drive the model using data generated from many minutes of in-game driving. The CNN has also been evaluated across multiple tracks and shows, rather ostensibly, that more work is needed to improve the ability of the network to perform equally well on tracks it had not been trained on. However, the demo of the simulation shows that the model is able to navigate the course with which it was trained with impressively.
 
 |Lake Track|Jungle Track|
 |:--------:|:------------:|
