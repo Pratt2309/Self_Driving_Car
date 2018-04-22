@@ -58,6 +58,8 @@ This will generate a file `model-<epoch>.h5` whenever the performance in the epo
 
 Generation of data takes place during simulation. A human driver drives the car on the tracks for the first simulation to generate driving images. Three cameras are placed on the front of the vehicle to capture left, right, centre perspective frontal images as the car drives along the road. In addition to the three sets of images captured, braking, acceleration, and steering angles applied by the human driver are also obtained. We are then left with a csv file consisting of all the relevant data that will be needed to train the model. Because the model essentially learns what it is trained on — the human driver’s driving images in this case— that is why this sort of training is termed behavioural-cloning and hence, we tried to drive as neatly as possible, ensuring with didn’t once veer off the road.
 
+![alt text](images/data_gen.png)
+
 ## Data Pre-processing
 The images that are captured contain features like the hood of the car and the sky that are inconsequential to the training and results of the model so we cropped these out. Subsequently, the images are normalized to avoid saturation and make the gradients work better. Image pre-processing measures taking:
 
