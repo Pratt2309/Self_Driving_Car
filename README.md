@@ -86,15 +86,39 @@ In the end, the model looks like as follows:
 
 As per the NVIDIA model, the convolution layers are meant to handle feature engineering and the fully connected layer for predicting the steering angle.  However, as stated in the NVIDIA document, it is not clear where to draw such a clear distinction.  Overall, the model is very functional to clone the given steering behavior.  
 
+
+## Training, Validation and Test
+
+I splitted the images into train and validation set in order to measure the performance at every epoch.  Testing was done using the simulator.
+
+As for training, 
+
+- I used mean squared error for the loss function to measure how close the model predicts to the given steering angle for each image.
+- I used Adam optimizer for optimization with learning rate of 1.0e-4 which is smaller than the default of 1.0e-3.  The default value was too big and made the validation loss stop improving too soon.
+- I used ModelCheckpoint from Keras to save the model only if the validation loss is improved which is checked for every epoch.
+
+### The Lake Side Track
+
+As there can be unlimited number of images augmented, I set the samples per epoch to 20,000.  I tried from 1 to 200 epochs but I found 5-10 epochs is good enough to produce a well trained model for the lake side track.  The batch size of 40 was chosen as that is the maximum size which does not cause out of memory error on my Mac with NVIDIA GeForce GT 650M 1024 MB.
+
+### The Jungle Track
+
+This tracker was later released in the new simulator by Udacity and replaced the old mountain track.  It's much more difficuilt than the lake side track and the old mountain track.
+
+I used the simulator to generate training data by doing 3 to 4 rounds.  Also, added several recovery scenarios to handle tricky curves and slopes.
+
+I felt that the validation loss is not a great indication of how well it drives.  So, I tried the last several models to see which one drives the best.  For this, I set the save_best_only to False (use `-o false` for model.py), and I used 50 epcohs (Use `-n 50`).
+
+
+## Outcome
+
+The model can drive the course without bumping into the side ways.
+
 |Lake Track|Jungle Track|
 |:--------:|:------------:|
 |[![Lake Track](images/lake_track.png)](https://www.youtube.com/watch?v=Qds_vNUqo0g)|[![Jungle Track](images/jungle_track.png)](https://www.youtube.com/watch?v=-OyanWt9Rgk)|
 |[YouTube Link](https://www.youtube.com/watch?v=Qds_vNUqo0g)|[YouTube Link](https://www.youtube.com/watch?v=-OyanWt9Rgk)|
 
-### Examples of Converted YUV Images
-
-|:--------:|:------------:|
-|[![Track](images/track)]|[![Pavement](images/pavement)]
 
 ## References
 - NVIDIA model: https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/
