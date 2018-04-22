@@ -1,6 +1,3 @@
-# ADS_Self_Driving_Car
-
-
 ## Project Description
 
 In this project, we use a neural network to clone car driving behavior.  It is a supervised regression problem between the car steering angles and the road images in front of a car.  
