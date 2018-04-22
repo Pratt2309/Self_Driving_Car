@@ -86,6 +86,11 @@ In the end, the model looks like as follows:
 
 As per the NVIDIA model, the convolution layers are meant to handle feature engineering and the fully connected layer for predicting the steering angle.  However, as stated in the NVIDIA document, it is not clear where to draw such a clear distinction.  Overall, the model is very functional to clone the given steering behavior.  
 
+|Lake Track|Jungle Track|
+|:--------:|:------------:|
+|[![Lake Track](images/lake_track.png)](https://www.youtube.com/watch?v=Qds_vNUqo0g)|[![Jungle Track](images/jungle_track.png)](https://www.youtube.com/watch?v=-OyanWt9Rgk)|
+|[YouTube Link](https://www.youtube.com/watch?v=Qds_vNUqo0g)|[YouTube Link](https://www.youtube.com/watch?v=-OyanWt9Rgk)|
+
 ## References
 - NVIDIA model: https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/
 - Udacity Self-Driving Car Simulator: https://github.com/udacity/self-driving-car-sim
