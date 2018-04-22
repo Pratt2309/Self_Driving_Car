@@ -91,6 +91,11 @@ As per the NVIDIA model, the convolution layers are meant to handle feature engi
 |[![Lake Track](images/lake_track.png)](https://www.youtube.com/watch?v=Qds_vNUqo0g)|[![Jungle Track](images/jungle_track.png)](https://www.youtube.com/watch?v=-OyanWt9Rgk)|
 |[YouTube Link](https://www.youtube.com/watch?v=Qds_vNUqo0g)|[YouTube Link](https://www.youtube.com/watch?v=-OyanWt9Rgk)|
 
+### Examples of Converted YUV Images
+
+|:--------:|:------------:|
+|[![Track](images/track)]|[![Pavement](images/pavement)]
+
 ## References
 - NVIDIA model: https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/
 - Udacity Self-Driving Car Simulator: https://github.com/udacity/self-driving-car-sim
