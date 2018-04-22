@@ -68,10 +68,10 @@ The images that are captured contain features like the hood of the car and the s
 - the images are normalized (image data divided by 127.5 and subtracted 1.0). As stated in the Model Architecture section, this is to avoid saturation and make gradients work better)
 
 ### RGB to YUV
-![alt text](images/track)
+![alt text](images/tracks.png)
 Top: subset of the camera image sent to the CNN. Bottom left: Activation of the first layer feature maps. Bottom right: Activation of the second layer feature maps. This image demonstrates that the CNN learned to detect useful road features on its own, i.e., with only the human steering angle as training signal. We never explicitly trained it to detect the outlines of roads.
 
-![alt text](images/pavement)
+![alt text](images/pavement.png)
 Example image with no road. The activations of the first two feature maps appear to contain mostly noise, i.e., the CNN doesn't recognize any useful features in this image. 
 
 ## Model Architecture Design
